@@ -23,6 +23,7 @@ struct VecturaCLI: AsyncParsableCommand {
     subcommands: [Add.self, Search.self, Update.self, Delete.self, Reset.self, Mock.self]
   )
 
+  @available(macOS 15.0, iOS 18.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *)
   static func setupDB(dbName: String, dimension: Int, numResults: Int, threshold: Float) throws
     -> VecturaKit
   {
@@ -60,6 +61,9 @@ extension VecturaCLI {
     var modelId: String = "sentence-transformers/all-MiniLM-L6-v2"
 
     mutating func run() async throws {
+      guard #available(macOS 15.0, iOS 18.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *) else {
+          throw ValidationError.unsupportedOSVersion
+      }
       let db = try VecturaCLI.setupDB(
         dbName: dbName,
         dimension: dimension,
@@ -144,6 +148,9 @@ extension VecturaCLI {
     var text: [String]
 
     mutating func run() async throws {
+      guard #available(macOS 15.0, iOS 18.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *) else {
+        throw ValidationError.unsupportedOSVersion
+      }
       let db = try VecturaCLI.setupDB(
         dbName: dbName,
         dimension: dimension,
@@ -184,6 +191,9 @@ extension VecturaCLI {
     var query: String
 
     mutating func run() async throws {
+      guard #available(macOS 15.0, iOS 18.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *) else {
+        throw ValidationError.unsupportedOSVersion
+      }
       let db = try VecturaCLI.setupDB(
         dbName: dbName,
         dimension: dimension,
@@ -229,6 +239,9 @@ extension VecturaCLI {
     var newText: String
 
     mutating func run() async throws {
+      guard #available(macOS 15.0, iOS 18.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *) else {
+        throw ValidationError.unsupportedOSVersion
+      }
       let db = try VecturaCLI.setupDB(
         dbName: dbName,
         dimension: dimension,
@@ -255,6 +268,9 @@ extension VecturaCLI {
     var ids: [DocumentID]
 
     mutating func run() async throws {
+      guard #available(macOS 15.0, iOS 18.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *) else {
+        throw ValidationError.unsupportedOSVersion
+      }
       let db = try VecturaCLI.setupDB(
         dbName: dbName,
         dimension: dimension,
@@ -278,6 +294,9 @@ extension VecturaCLI {
     var dimension: Int = 384
 
     mutating func run() async throws {
+      guard #available(macOS 15.0, iOS 18.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *) else {
+        throw ValidationError.unsupportedOSVersion
+      }
       let db = try VecturaCLI.setupDB(
         dbName: dbName,
         dimension: dimension,
@@ -288,4 +307,8 @@ extension VecturaCLI {
       print("Database reset successfully")
     }
   }
+}
+
+internal extension ValidationError {
+    static let unsupportedOSVersion = ValidationError("VecturaKit requires macOS 15 or later.")
 }
